@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const tabla_jugadores = require("../database/queries/jugadores.js");
+const tabla_jugadores = require("../controllers/jugadores.js");
 
 router.post("/login", async (req, res) => {
   const { user, password } = req.body;

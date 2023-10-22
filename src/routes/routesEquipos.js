@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const teams = require("../database/queries/equipos.js");
+const teams = require("../controllers/equipos.js");
 
 router.get("/equipos", async (req, res) => {
   try {

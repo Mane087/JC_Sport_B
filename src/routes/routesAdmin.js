@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const admin = require("../database/queries/admin");
+const admin = require("../controllers/admin");
 
 router.post('/loginAdmin', async (req, res) => {
     const {user, password} = req.body;

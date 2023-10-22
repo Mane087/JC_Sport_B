@@ -1,4 +1,4 @@
-const pool = require("../conecxion.js").pool;
+const pool = require("../database/conecxion.js").pool;
 
 const getAllEquipos = async () => {
   try {

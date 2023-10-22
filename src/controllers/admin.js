@@ -1,7 +1,7 @@
-const pool = require("../conecxion.js").pool;
+const pool = require("../database/conecxion.js").pool;
 const jwt = require("jsonwebtoken");
 
-const loginUser = async (user , password) => {
+const loginAdmin = async (user, password) => {
   if (!user || !password) {
     console.error("Username or password is undefined or empty!");
     return null;
@@ -12,14 +12,14 @@ const loginUser = async (user , password) => {
 
     try {
       const [users] = await connection.query(
-        "SELECT * FROM jugadores WHERE numeroJugador = ?",
-        [user ]
+        "SELECT * FROM admin WHERE usuario = ?",
+        [user]
       );
 
       if (users.length === 0) return null;
-      
-      const player = users[0];
-      const token = validationJwToken(player);
+
+      const admin = users[0];
+      const token = validationJwToken(admin);
       return token;
     } finally {
       connection.release();
@@ -31,15 +31,14 @@ const loginUser = async (user , password) => {
   }
 };
 
-function validationJwToken(player) {
+function validationJwToken(admin) {
   const payload = {
-    user: player.nombre,
-    number: player.numeroJugador, // o admin.user si tu propiedad se llama user
-    role: player.role // incluir el role en el payload del token
-};
-return jwt.sign(payload, process.env.JWT_SECRET, {
+    user: admin.usuario, // o admin.user si tu propiedad se llama user
+    role: admin.role, // incluir el role en el payload del token
+  };
+  return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: "1m",
-});
+  });
 }
 
 const userExists = async (user) => {
@@ -53,7 +52,7 @@ const userExists = async (user) => {
 
     try {
       const [users] = await connection.query(
-        "SELECT * FROM jugadores WHERE numeroJugador = ?",
+        "SELECT * FROM admin WHERE usuario = ?",
         [user]
       );
       return users.length > 0;
@@ -67,21 +66,19 @@ const userExists = async (user) => {
   }
 };
 
-const getAllJugadores = async (idEquipo) => {
-  if (!idEquipo) {
-    console.error("Username is undefined or empty!");
-    return false;
-  }
+// addPlayer
+// deletePlayer
+// updatePlayer
+// getPlayer
+// getAllPlayers
 
+
+const getAllPlayers = async () => {
   try {
     const connection = await pool.getConnection();
-
     try {
-      const [users] = await connection.query(
-        "SELECT foto, nombre  FROM jugadores WHERE idEquipo = ?",
-        [idEquipo]
-      );
-      return users;
+      const [players] = await connection.query("SELECT * FROM jugadores");
+      return players;
     } finally {
       connection.release();
     }
@@ -90,8 +87,6 @@ const getAllJugadores = async (idEquipo) => {
     console.log(error);
     return false;
   }
-}
+};
 
-
-
-module.exports = { loginUser, userExists, getAllJugadores };
+module.exports = { loginAdmin, userExists };
