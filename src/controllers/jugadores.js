@@ -78,7 +78,7 @@ const getAllJugadores = async (idEquipo) => {
 
     try {
       const [users] = await connection.query(
-        "SELECT foto, nombre  FROM jugadores WHERE idEquipo = ?",
+        "SELECT *  FROM jugadores WHERE idEquipo = ?",
         [idEquipo]
       );
       return users;
@@ -92,6 +92,29 @@ const getAllJugadores = async (idEquipo) => {
   }
 }
 
+const getJugador = async (idJugador) => {
+  if (!idJugador) {
+    console.error("Username is undefined or empty!");
+    return false;
+  }
 
+  try {
+    const connection = await pool.getConnection();
 
-module.exports = { loginUser, userExists, getAllJugadores };
+    try {
+      const [users] = await connection.query(
+        "SELECT jugadores.*, equipos.nombre AS nombre_equipo, equipos.localidad, DATE_FORMAT(jugadores.fechaNacimiento, '%Y-%m-%d') AS fechaNacimientoFormateada FROM jugadores INNER JOIN equipos ON jugadores.idEquipo = equipos.idEquipo WHERE jugadores.numeroJugador = ? ",
+        [idJugador]
+      );
+      return users;
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Error during user existence check:", error);
+    console.log(error);
+    return false;
+  }
+}
+
+module.exports = { loginUser, userExists, getAllJugadores, getJugador };

@@ -37,5 +37,17 @@ router.get("/jugadores/:idEquipo", async (req, res) => {
   }
 });
 
+router.get("/jugador/:idJugador", async (req, res) => {
+  try {
+    const idJugador = req.params.idJugador;
+    const jugadores = await tabla_jugadores.getJugador(idJugador); // Pasa el ID a la función
+    res.json(jugadores);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("An error occurred while retrieving players.");
+    res.status(500).send("An error occurred while retrieving users.");
+  }
+});
+
 
 module.exports = router;
