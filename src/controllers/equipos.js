@@ -15,14 +15,14 @@ const getAllEquipos = async () => {
   }
 };
 
-const getEquipo = async (id) => {
+const getEquipo = async (idEquipo) => {
   try {
     const connection = await pool.getConnection();
 
     try {
       const [equipos] = await connection.query(
-        "SELECT * FROM equipos WHERE id = ?",
-        [id]
+        "SELECT * FROM equipos WHERE idEquipo = ?",
+        [idEquipo]
       );
       return equipos;
     } finally {
@@ -57,10 +57,10 @@ const updateEquipo = async (equipo) => {
     
         try {
         const [equipos] = await connection.query(
-            "UPDATE equipos SET nombre = ?, logo = ?, idLiga = ? WHERE id = ?",
-            [equipo.nombre, equipo.logo, equipo.idLiga, equipo.id]
+            "UPDATE equipos SET nombre = ?, localidad = ? ,logo = ? WHERE idEquipo = ?",
+            [equipo.nombre, equipo.localidad ,equipo.logo, equipo.idEquipo]
         );
-        return equipos;
+        return { status: 'OK', message: 'Equipo actulizado correctamente' };
         } finally {
         connection.release();
         }
@@ -69,22 +69,30 @@ const updateEquipo = async (equipo) => {
     }
 }
 
-const deleteEquipo = async (id) => {
-    try {
-        const connection = await pool.getConnection();
-    
-        try {
-        const [equipos] = await connection.query(
-            "DELETE FROM equipos WHERE id = ?",
-            [id]
-        );
-        return equipos;
-        } finally {
-        connection.release();
-        }
-    } catch (error) {
-        console.error(error);
-    }
+const deleteEquipo = async (idEquipo) => {
+  try {
+      const connection = await pool.getConnection();
+  
+      try {
+          const result = await connection.query(
+              "DELETE FROM equipos WHERE idEquipo = ?",
+              [idEquipo]
+          );
+          if (result.affectedRows > 0) {
+              
+              return { status: 'OK', message: 'Equipo eliminado exitosamente' };
+          } else {
+              
+              return { status: 'ERROR', message: 'No se encontró ningún equipo con ese ID' };
+          }
+      } finally {
+          connection.release();
+      }
+  } catch (error) {
+      console.error(error);
+      return { status: 'ERROR', message: 'Error al eliminar el equipo' };
+  }
 }
+
 
 module.exports = { getAllEquipos, getEquipo, createEquipo, updateEquipo, deleteEquipo };

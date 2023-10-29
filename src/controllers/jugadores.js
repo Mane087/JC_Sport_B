@@ -117,4 +117,48 @@ const getJugador = async (idJugador) => {
   }
 }
 
-module.exports = { loginUser, userExists, getAllJugadores, getJugador };
+const addJugador = async (jugador) => {
+  if (!jugador) {
+    console.error("Jugador is undefined or empty!");
+    return false;
+  }
+
+  try {
+    const connection = await pool.getConnection();
+
+    try {
+      const [result] = await connection.query(
+        "INSERT INTO jugadores (numeroJugador, foto, nombre, fechaNacimiento, domicilio, telefono, estatura, peso, idEquipo, posicion, minutosJugados, partidosJugados, goles, autogoles, tarjetasAmarillas, tarjetasRojas, contraseña, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          jugador.numeroJugador,
+          jugador.foto,
+          jugador.nombre,
+          jugador.fechaNacimiento,
+          jugador.domicilio,
+          jugador.telefono,
+          jugador.estatura,
+          jugador.peso,
+          jugador.idEquipo,
+          jugador.posicion,
+          jugador.partidosJugados,
+          jugador.goles,
+          jugador.autogoles,
+          jugador.tarjetasAmarillas,
+          jugador.tarjetasRojas,
+          jugador.contraseña,
+          jugador.role
+        ]
+      );
+
+      return result;
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Error during jugador insertion:", error);
+    return false;
+  }
+}
+
+
+module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador };
