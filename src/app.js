@@ -14,13 +14,15 @@ app.get('/', function (req, res) {
 
 
 const corsOptions = {
-  origin: ['http://127.0.0.1:5500', 'http://localhost:3000', 'https://jfc-b-production.up.railway.app', 'http://localhost:8080'],
+  origin: ['http://127.0.0.1:5500', 'http://localhost:3000', 'https://jfc-b-production.up.railway.app', 'http://localhost:8080', 'https://scintillating-banoffee-7151a2.netlify.app'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
+
+// app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
