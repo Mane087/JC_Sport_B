@@ -128,7 +128,7 @@ const addJugador = async (jugador) => {
 
     try {
       const [result] = await connection.query(
-        "INSERT INTO jugadores (numeroJugador, foto, nombre, fechaNacimiento, domicilio, telefono, estatura, peso, idEquipo, posicion, minutosJugados, partidosJugados, goles, autogoles, tarjetasAmarillas, tarjetasRojas, contraseña, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO jugadores (numeroJugador, foto, nombre, fechaNacimiento, domicilio, telefono, estatura, peso, idEquipo, posicion, partidosJugados, goles, autogoles, tarjetasAmarillas, tarjetasRojas, contraseña, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           jugador.numeroJugador,
           jugador.foto,
