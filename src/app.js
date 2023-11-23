@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
 
 
 const corsOptions = {
-  origin: ['http://127.0.0.1:5500', 'http://localhost:3000', 'https://jfc-b-production.up.railway.app', 'http://localhost:8080', 'https://scintillating-banoffee-7151a2.netlify.app'],
+  origin: ['http://127.0.0.1:5500', 'http://localhost:3000', 'https://jfc-b-production.up.railway.app', 'http://localhost:8080', 'https://jc-sportclub.com'],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
   optionsSuccessStatus: 204,
