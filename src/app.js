@@ -7,6 +7,7 @@ const PORT = process.env.PORT || 3000;
 const routes_Jugadores = require('./routes/routesJugadores.js');
 const routes_Admin = require('./routes/routesAdmin.js');
 const routesEquipos = require('./routes/routesEquipos.js');
+const routeMail = require('./routes/routesMail.js')
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -48,6 +49,8 @@ app.use('/api', routes_Jugadores);
 app.use('/api', routes_Admin);
 
 app.use('/api', routesEquipos);
+
+app.use('/api', routeMail);
 
 
 app.listen(PORT, () => {
