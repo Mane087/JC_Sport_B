@@ -8,6 +8,7 @@ class MailController {
       res.json({ message: "Correo enviado" });
     } catch (error) {
       res.status(500).json({ message: "Error al enviar el correo", error });
+      console.log(error);
     }
   }
 }
