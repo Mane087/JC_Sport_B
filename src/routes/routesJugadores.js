@@ -5,12 +5,11 @@ const tabla_jugadores = require("../controllers/jugadores.js");
 router.post("/login", async (req, res) => {
   const { user, password } = req.body;
 
-  
   try {
-    const token = await tabla_jugadores.loginUser(user , password);
+    const token = await tabla_jugadores.loginUser(user, password);
     console.log(token);
     if (!token) {
-      const userExists = await tabla_jugadores.userExists(user ); // Asume que tienes un método userExists
+      const userExists = await tabla_jugadores.userExists(user); // Asume que tienes un método userExists
       if (userExists) {
         return res.status(400).send("Invalid password.");
       } else {
@@ -67,7 +66,7 @@ router.post("/addJugador", async (req, res) => {
     tarjetasAmarillas,
     tarjetasRojas,
     contraseña,
-    role
+    role,
   } = req.body;
 
   const jugador = {
@@ -87,7 +86,7 @@ router.post("/addJugador", async (req, res) => {
     tarjetasAmarillas,
     tarjetasRojas,
     contraseña,
-    role
+    role,
   };
 
   try {
@@ -99,6 +98,44 @@ router.post("/addJugador", async (req, res) => {
   }
 });
 
+router.post("/registerPT", async (req, res) => {
+  const {
+    numeroJugador,
+    fechaPT,
+    velocidad,
+    coordinacion,
+    dominioBalon,
+    autoPase,
+    conduccion,
+    remateCabeza,
+    despeje,
+    tiroPenal,
+    Recepcion,
+    Resistencia,
+  } = req.body;
 
+  const pruebaTecnica = {
+    numeroJugador,
+    fechaPT,
+    velocidad,
+    coordinacion,
+    dominioBalon,
+    autoPase,
+    conduccion,
+    remateCabeza,
+    despeje,
+    tiroPenal,
+    Recepcion,
+    Resistencia,
+  };
+
+  try {
+    const result = await tabla_jugadores.registerPT(pruebaTecnica);
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while adding a new player.");
+  }
+});
 
 module.exports = router;

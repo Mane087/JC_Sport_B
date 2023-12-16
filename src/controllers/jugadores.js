@@ -160,5 +160,43 @@ const addJugador = async (jugador) => {
   }
 }
 
+const registerPT = async (pruebaTecnica) => {
+  if (!pruebaTecnica) {
+    console.error("Jugador is undefined or empty!");
+    return false;
+  }
 
-module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador };
+  try {
+    const connection = await pool.getConnection();
+
+    try {
+      const [result] = await connection.query(
+        "INSERT INTO pruebas_Tecnicas (numeroJugador, fechaPT, velocidad, coordinacion, dominioBalon, autoPase, conduccion, remateCabeza, despeje, tiroPenal, Recepcion, Resistencia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          pruebaTecnica.numeroJugador,
+          pruebaTecnica.fechaPT,
+          pruebaTecnica.velocidad,
+          pruebaTecnica.coordinacion,
+          pruebaTecnica.dominioBalon,
+          pruebaTecnica.autoPase,
+          pruebaTecnica.conduccion,
+          pruebaTecnica.remateCabeza,
+          pruebaTecnica.despeje,
+          pruebaTecnica.tiroPenal,
+          pruebaTecnica.Recepcion,
+          pruebaTecnica.Resistencia
+        ]
+      );
+
+      return result;
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Error during jugador insertion:", error);
+    return false;
+  }
+}
+
+
+module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador, registerPT };
