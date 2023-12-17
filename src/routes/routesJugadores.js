@@ -138,4 +138,16 @@ router.post("/registerPT", async (req, res) => {
   }
 });
 
+router.get("/getDataPT/:idJugador", async (req, res) => {
+  try {
+    const idJugador = req.params.idJugador;
+    const pruebaTecnica = await tabla_jugadores.getDataPT(idJugador); 
+    res.json(pruebaTecnica);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send("An error occurred while retrieving players.");
+    res.status(500).send("An error occurred while retrieving users.");
+  }
+});
+
 module.exports = router;

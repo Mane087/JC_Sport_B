@@ -198,5 +198,30 @@ const registerPT = async (pruebaTecnica) => {
   }
 }
 
+const getDataPT = async (idJugador) => {
+  if (!idJugador) {
+    console.error("Username is undefined or empty!");
+    return false;
+  }
 
-module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador, registerPT };
+  try {
+    const connection = await pool.getConnection();
+
+    try {
+      const [users] = await connection.query(
+        "SELECT *  FROM pruebas_Tecnicas WHERE numeroJugador = ?",
+        [idJugador]
+      );
+      return users;
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Error during user existence check:", error);
+    console.log(error);
+    return false;
+  }
+}
+
+
+module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador, registerPT, getDataPT };
