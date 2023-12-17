@@ -150,4 +150,54 @@ router.get("/getDataPT/:idJugador", async (req, res) => {
   }
 });
 
+router.put("/updateJugador", async (req, res) => {
+  const {
+    numeroJugador,
+    foto,
+    nombre,
+    fechaNacimiento,
+    domicilio,
+    telefono,
+    estatura,
+    peso,
+    idEquipo,
+    posicion,
+    partidosJugados,
+    goles,
+    autogoles,
+    tarjetasAmarillas,
+    tarjetasRojas,
+    contraseña,
+    role,
+  } = req.body;
+
+  const jugador = {
+    numeroJugador,
+    foto,
+    nombre,
+    fechaNacimiento,
+    domicilio,
+    telefono,
+    estatura,
+    peso,
+    idEquipo,
+    posicion,
+    partidosJugados,
+    goles,
+    autogoles,
+    tarjetasAmarillas,
+    tarjetasRojas,
+    contraseña,
+    role,
+  };
+
+  try {
+    const result = await tabla_jugadores.updateJugador(jugador);
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while adding a new player.");
+  }
+});
+
 module.exports = router;

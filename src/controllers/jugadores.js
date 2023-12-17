@@ -160,6 +160,49 @@ const addJugador = async (jugador) => {
   }
 }
 
+const updateJugador = async (jugador) => {
+  if (!jugador) {
+    console.error("Jugador is undefined or empty!");
+    return false;
+  }
+
+  try {
+    const connection = await pool.getConnection();
+    
+    try {
+      const [result] = await connection.query(
+        "UPDATE jugadores SET nombre = ?, fechaNacimiento = ?, domicilio = ?, telefono = ?, estatura = ?, peso = ?, idEquipo = ?, posicion = ?, partidosJugados = ?, goles = ?, autogoles = ?, tarjetasAmarillas = ?, tarjetasRojas = ?, contraseña = ?, role = ? WHERE numeroJugador = ?",
+        [
+          jugador.nombre,
+          jugador.fechaNacimiento,
+          jugador.domicilio,
+          jugador.telefono,
+          jugador.estatura,
+          jugador.peso,
+          jugador.idEquipo,
+          jugador.posicion,
+          jugador.partidosJugados,
+          jugador.goles,
+          jugador.autogoles,
+          jugador.tarjetasAmarillas,
+          jugador.tarjetasRojas,
+          jugador.contraseña,
+          jugador.role,
+          jugador.numeroJugador
+        ]
+      );
+
+      return result;
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    console.error("Error during jugador insertion:", error);
+    return false;
+  }
+}
+
+
 const registerPT = async (pruebaTecnica) => {
   if (!pruebaTecnica) {
     console.error("Jugador is undefined or empty!");
@@ -224,4 +267,4 @@ const getDataPT = async (idJugador) => {
 }
 
 
-module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador, registerPT, getDataPT };
+module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador, registerPT, getDataPT, updateJugador };
