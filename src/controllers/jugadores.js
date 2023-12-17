@@ -1,7 +1,7 @@
 const pool = require("../database/conecxion.js").pool;
 const jwt = require("jsonwebtoken");
 
-const loginUser = async (user , password) => {
+const loginUser = async (user, password) => {
   if (!user || !password) {
     console.error("Username or password is undefined or empty!");
     return null;
@@ -13,11 +13,11 @@ const loginUser = async (user , password) => {
     try {
       const [users] = await connection.query(
         "SELECT * FROM jugadores WHERE numeroJugador = ?",
-        [user ]
+        [user]
       );
 
       if (users.length === 0) return null;
-      
+
       const player = users[0];
       const token = validationJwToken(player);
       return token;
@@ -35,11 +35,11 @@ function validationJwToken(player) {
   const payload = {
     user: player.nombre,
     number: player.numeroJugador, // o admin.user si tu propiedad se llama user
-    role: player.role // incluir el role en el payload del token
-};
-return jwt.sign(payload, process.env.JWT_SECRET, {
+    role: player.role, // incluir el role en el payload del token
+  };
+  return jwt.sign(payload, process.env.JWT_SECRET, {
     expiresIn: "1m",
-});
+  });
 }
 
 const userExists = async (user) => {
@@ -90,7 +90,7 @@ const getAllJugadores = async (idEquipo) => {
     console.log(error);
     return false;
   }
-}
+};
 
 const getJugador = async (idJugador) => {
   if (!idJugador) {
@@ -115,7 +115,7 @@ const getJugador = async (idJugador) => {
     console.log(error);
     return false;
   }
-}
+};
 
 const addJugador = async (jugador) => {
   if (!jugador) {
@@ -146,7 +146,7 @@ const addJugador = async (jugador) => {
           jugador.tarjetasAmarillas,
           jugador.tarjetasRojas,
           jugador.contraseña,
-          jugador.role
+          jugador.role,
         ]
       );
 
@@ -158,7 +158,7 @@ const addJugador = async (jugador) => {
     console.error("Error during jugador insertion:", error);
     return false;
   }
-}
+};
 
 const updateJugador = async (jugador) => {
   if (!jugador) {
@@ -168,10 +168,10 @@ const updateJugador = async (jugador) => {
 
   try {
     const connection = await pool.getConnection();
-    
+
     try {
       const [result] = await connection.query(
-        "UPDATE jugadores SET nombre = ?, fechaNacimiento = ?, domicilio = ?, telefono = ?, estatura = ?, peso = ?, idEquipo = ?, posicion = ?, partidosJugados = ?, goles = ?, autogoles = ?, tarjetasAmarillas = ?, tarjetasRojas = ?, contraseña = ?, role = ? WHERE numeroJugador = ?",
+        "UPDATE jugadores SET nombre = ?, fechaNacimiento = ?, domicilio = ?, telefono = ?, estatura = ?, peso = ?, posicion = ?, contraseña = ? WHERE numeroJugador = ?",
         [
           jugador.nombre,
           jugador.fechaNacimiento,
@@ -179,16 +179,9 @@ const updateJugador = async (jugador) => {
           jugador.telefono,
           jugador.estatura,
           jugador.peso,
-          jugador.idEquipo,
           jugador.posicion,
-          jugador.partidosJugados,
-          jugador.goles,
-          jugador.autogoles,
-          jugador.tarjetasAmarillas,
-          jugador.tarjetasRojas,
           jugador.contraseña,
-          jugador.role,
-          jugador.numeroJugador
+          jugador.numeroJugador,
         ]
       );
 
@@ -200,8 +193,7 @@ const updateJugador = async (jugador) => {
     console.error("Error during jugador insertion:", error);
     return false;
   }
-}
-
+};
 
 const registerPT = async (pruebaTecnica) => {
   if (!pruebaTecnica) {
@@ -227,7 +219,7 @@ const registerPT = async (pruebaTecnica) => {
           pruebaTecnica.despeje,
           pruebaTecnica.tiroPenal,
           pruebaTecnica.Recepcion,
-          pruebaTecnica.Resistencia
+          pruebaTecnica.Resistencia,
         ]
       );
 
@@ -239,7 +231,7 @@ const registerPT = async (pruebaTecnica) => {
     console.error("Error during jugador insertion:", error);
     return false;
   }
-}
+};
 
 const getDataPT = async (idJugador) => {
   if (!idJugador) {
@@ -264,7 +256,15 @@ const getDataPT = async (idJugador) => {
     console.log(error);
     return false;
   }
-}
+};
 
-
-module.exports = { loginUser, userExists, getAllJugadores, getJugador, addJugador, registerPT, getDataPT, updateJugador };
+module.exports = {
+  loginUser,
+  userExists,
+  getAllJugadores,
+  getJugador,
+  addJugador,
+  registerPT,
+  getDataPT,
+  updateJugador,
+};

@@ -141,7 +141,7 @@ router.post("/registerPT", async (req, res) => {
 router.get("/getDataPT/:idJugador", async (req, res) => {
   try {
     const idJugador = req.params.idJugador;
-    const pruebaTecnica = await tabla_jugadores.getDataPT(idJugador); 
+    const pruebaTecnica = await tabla_jugadores.getDataPT(idJugador);
     res.json(pruebaTecnica);
   } catch (error) {
     console.error(error);
@@ -160,15 +160,8 @@ router.put("/updateJugador", async (req, res) => {
     telefono,
     estatura,
     peso,
-    idEquipo,
     posicion,
-    partidosJugados,
-    goles,
-    autogoles,
-    tarjetasAmarillas,
-    tarjetasRojas,
-    contraseña,
-    role,
+    contraseña
   } = req.body;
 
   const jugador = {
@@ -180,15 +173,8 @@ router.put("/updateJugador", async (req, res) => {
     telefono,
     estatura,
     peso,
-    idEquipo,
     posicion,
-    partidosJugados,
-    goles,
-    autogoles,
-    tarjetasAmarillas,
-    tarjetasRojas,
-    contraseña,
-    role,
+    contraseña
   };
 
   try {
