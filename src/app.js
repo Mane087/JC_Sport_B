@@ -24,7 +24,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
-  const allowedOrigins = ['https://jc-sportclub.com', 'http://localhost:8080']; // Asegúrate de incluir el puerto correcto de tu localhost
+  const allowedOrigins = ['https://jc-sportclub.com', 'http://localhost:8080']; 
   const origin = req.headers.origin;
 
   if (allowedOrigins.includes(origin)) {
